@@ -81,7 +81,7 @@ if uploaded_file:
                     message = (f"PROCESSING FAILED AT:\n\n"
                                f"ROW: {idx}\n\n"
                                f"COLUMN: {col}\n\n"
-                               f"The contents of this cell are: '{student}\n\n'"
+                               f"The contents of this cell are: '{student}'\n\n"
                                f"Please verify there is a space, a dash, "
                                f"and a space, e.g. ' - ', separating the student and home room.")
                     st.write(f"{message}\n\nError: {e}")
