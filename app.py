@@ -81,7 +81,8 @@ if uploaded_file:
                                f"Column {col}\n"
                                f"Contains student {student}. Please verify there is a space, a dash, "
                                f"and a space, e.g. ' - ', and not ' -' or '- ' or '-'.")
-                    raise ValueError(f"message\n\nError: {e}")
+                    st.write(f"message\n\nError: {e}")
+                    raise ValueError(e)
                 sub_df = pd.DataFrame({"Class": [student_class], "Student": [student_name], "WIN Block": [col]})
                 blocks.append(sub_df)
 
