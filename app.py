@@ -72,6 +72,7 @@ if uploaded_file:
         for idx in df.index:
             student = df.loc[idx, col]
             if isinstance(student, str):
+                student = student.replace('\xa0', ' ')
                 student_name, student_class = student.split(" - ")
                 sub_df = pd.DataFrame({"Class": [student_class], "Student": [student_name], "WIN Block": [col]})
                 blocks.append(sub_df)
