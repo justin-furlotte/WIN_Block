@@ -5,13 +5,6 @@ from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
-import re
-
-
-def fix_dash_spacing(s):
-    # Replace cases where there's a dash but missing spaces
-    s = re.sub(r' ?- ?', ' - ', s)
-    return s
 
 
 def dataframe_to_pdf(df):
@@ -81,7 +74,6 @@ if uploaded_file:
             if isinstance(student, str):
                 try:
                     student = student.replace('\xa0', ' ')
-                    student = fix_dash_spacing(student)
                     student_name, student_class = student.split(" - ")
                     sub_df = pd.DataFrame({"Class": [student_class], "Student": [student_name], "WIN Block": [col]})
                     blocks.append(sub_df)
