@@ -72,8 +72,16 @@ if uploaded_file:
         for idx in df.index:
             student = df.loc[idx, col]
             if isinstance(student, str):
-                student = student.replace('\xa0', ' ')
-                student_name, student_class = student.split(" - ")
+                try:
+                    student = student.replace('\xa0', ' ')
+                    student_name, student_class = student.split(" - ")
+                except Exception as e:
+                    message = (f"Your formatting may be off:\n"
+                               f"Row {idx}\n"
+                               f"Column {col}\n"
+                               f"Contains student {student}. Please verify there is a space, a dash, "
+                               f"and a space, e.g. ' - ', and not ' -' or '- ' or '-'.")
+                    raise ValueError(f"message\n\nError: {e}")
                 sub_df = pd.DataFrame({"Class": [student_class], "Student": [student_name], "WIN Block": [col]})
                 blocks.append(sub_df)
 
