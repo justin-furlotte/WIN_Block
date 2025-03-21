@@ -5,6 +5,13 @@ from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
+import re
+
+
+def fix_dash_spacing(s):
+    # Replace cases where there's a dash but missing spaces
+    s = re.sub(r' ?- ?', ' - ', s)
+    return s
 
 
 def dataframe_to_pdf(df):
@@ -74,17 +81,19 @@ if uploaded_file:
             if isinstance(student, str):
                 try:
                     student = student.replace('\xa0', ' ')
+                    student = fix_dash_spacing(student)
                     student_name, student_class = student.split(" - ")
+                    sub_df = pd.DataFrame({"Class": [student_class], "Student": [student_name], "WIN Block": [col]})
+                    blocks.append(sub_df)
                 except Exception as e:
-                    message = (f"Your formatting may be off:\n"
-                               f"Row {idx}\n"
-                               f"Column {col}\n"
-                               f"Contains student {student}. Please verify there is a space, a dash, "
-                               f"and a space, e.g. ' - ', and not ' -' or '- ' or '-'.")
+                    message = (f"Processing failed at:\n\n"
+                               f"Row {idx}\n\n"
+                               f"Column {col}\n\n"
+                               f"The contents of this cell are: {student}\n\n"
+                               f"Please verify there is a space, a dash, "
+                               f"and a space, e.g. ' - ', separating the student and home room.")
                     st.write(f"{message}\n\nError: {e}")
                     raise ValueError(e)
-                sub_df = pd.DataFrame({"Class": [student_class], "Student": [student_name], "WIN Block": [col]})
-                blocks.append(sub_df)
 
     blocks = pd.concat(blocks)
 
