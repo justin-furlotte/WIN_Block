@@ -78,10 +78,10 @@ if uploaded_file:
                     sub_df = pd.DataFrame({"Class": [student_class], "Student": [student_name], "WIN Block": [col]})
                     blocks.append(sub_df)
                 except Exception as e:
-                    message = (f"Processing failed at:\n\n"
-                               f"Row {idx}\n\n"
-                               f"Column {col}\n\n"
-                               f"The contents of this cell are: {student}\n\n"
+                    message = (f"PROCESSING FAILED AT:\n\n"
+                               f"ROW: {idx}\n\n"
+                               f"COLUMN: {col}\n\n"
+                               f"The contents of this cell are: '{student}\n\n'"
                                f"Please verify there is a space, a dash, "
                                f"and a space, e.g. ' - ', separating the student and home room.")
                     st.write(f"{message}\n\nError: {e}")
