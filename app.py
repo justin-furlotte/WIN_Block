@@ -53,7 +53,7 @@ def create_zip_with_pdfs(pdf_buffers, filenames):
 
 st.title("WIN Block Processor")
 
-uploaded_file = st.file_uploader("Upload a CSV file (if using Excel, save CSV UTF-8)", type="csv")
+uploaded_file = st.file_uploader("Upload a CSV file (if using Excel, save as CSV UTF-8)", type="csv")
 
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
@@ -76,7 +76,6 @@ if uploaded_file:
                     student = student.replace('\xa0', ' ')
                     student_name, student_class = student.split(" - ")
                     sub_df = pd.DataFrame({"Class": [student_class], "Student": [student_name], "WIN Block": [col]})
-                    sub_df = sub_df.sort_values(by="Student", ascending=True)
                     blocks.append(sub_df)
                 except Exception as e:
                     message = (f"PROCESSING FAILED AT:\n\n"
@@ -98,6 +97,7 @@ if uploaded_file:
     pdf_buffers = []
     for cls in classes:
         class_df = blocks.loc[blocks["Class"] == cls]
+        class_df = class_df.sort_values(by="Student", ascending=True)
         pdf = dataframe_to_pdf(class_df)
         pdf_buffers.append(pdf)
 
